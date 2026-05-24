@@ -1,0 +1,33 @@
+{
+  "name": "@wesleysimplicio/llm-project-mapper",
+  "version": "0.1.0",
+  "description": "Map any codebase into a structured .llm-project-mapper.json so AI agents understand a project before they program it.",
+  "type": "module",
+  "bin": {
+    "llm-project-mapper": "bin/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "engines": {
+    "node": ">=16.7"
+  },
+  "scripts": {
+    "start": "node bin/cli.js",
+    "map": "node bin/cli.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "llm",
+    "ai-agents",
+    "codebase-analysis",
+    "project-map",
+    "context"
+  ],
+  "license": "MIT",
+  "author": "Wesley Simplicio"
+}

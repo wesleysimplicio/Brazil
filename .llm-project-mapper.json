@@ -1,0 +1,506 @@
+{
+  "schema": "llm-project-mapper/v1",
+  "generatedAt": "2026-05-24T22:44:16.953Z",
+  "generator": {
+    "name": "@wesleysimplicio/llm-project-mapper",
+    "version": "0.1.0"
+  },
+  "root": "/home/user/Brazil",
+  "name": "us4_v6_simplicio_apple",
+  "stacks": [
+    {
+      "kind": "cmake",
+      "marker": "CMakeLists.txt",
+      "name": "us4_v6_simplicio_apple",
+      "manager": "cmake"
+    }
+  ],
+  "languages": [
+    {
+      "language": "C++",
+      "files": 24,
+      "lines": 1606,
+      "bytes": 46437
+    },
+    {
+      "language": "JavaScript",
+      "files": 13,
+      "lines": 1294,
+      "bytes": 37299
+    },
+    {
+      "language": "Other",
+      "files": 2,
+      "lines": 222,
+      "bytes": 11562
+    },
+    {
+      "language": "Markdown",
+      "files": 1,
+      "lines": 213,
+      "bytes": 11768
+    },
+    {
+      "language": "YAML",
+      "files": 3,
+      "lines": 133,
+      "bytes": 5702
+    },
+    {
+      "language": "CMake",
+      "files": 4,
+      "lines": 70,
+      "bytes": 1855
+    },
+    {
+      "language": "JSON",
+      "files": 2,
+      "lines": 44,
+      "bytes": 894
+    }
+  ],
+  "dependencies": [],
+  "entryPoints": [
+    "apps/main.cpp"
+  ],
+  "metrics": {
+    "totalFiles": 49,
+    "totalDirs": 14,
+    "totalLines": 3582,
+    "totalBytes": 115517,
+    "maxDepth": 3
+  },
+  "structure": {
+    "name": ".",
+    "type": "dir",
+    "children": [
+      {
+        "name": ".github",
+        "type": "dir",
+        "children": [
+          {
+            "name": "ISSUE_TEMPLATE",
+            "type": "dir",
+            "children": [
+              {
+                "name": "bug_report.yml",
+                "type": "file",
+                "language": "YAML",
+                "bytes": 3730,
+                "lines": 76
+              },
+              {
+                "name": "config.yml",
+                "type": "file",
+                "language": "YAML",
+                "bytes": 516,
+                "lines": 11
+              }
+            ]
+          },
+          {
+            "name": "workflows",
+            "type": "dir",
+            "children": [
+              {
+                "name": "inactive.yml",
+                "type": "file",
+                "language": "YAML",
+                "bytes": 1456,
+                "lines": 46
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": ".gitignore",
+        "type": "file",
+        "language": "Other",
+        "bytes": 205,
+        "lines": 21
+      },
+      {
+        "name": "apps",
+        "type": "dir",
+        "children": [
+          {
+            "name": "CMakeLists.txt",
+            "type": "file",
+            "language": "CMake",
+            "bytes": 146,
+            "lines": 3
+          },
+          {
+            "name": "main.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 5618,
+            "lines": 164
+          }
+        ]
+      },
+      {
+        "name": "CMakeLists.txt",
+        "type": "file",
+        "language": "CMake",
+        "bytes": 658,
+        "lines": 28
+      },
+      {
+        "name": "LICENSE",
+        "type": "file",
+        "language": "Other",
+        "bytes": 11357,
+        "lines": 201
+      },
+      {
+        "name": "README.md",
+        "type": "file",
+        "language": "Markdown",
+        "bytes": 11768,
+        "lines": 213
+      },
+      {
+        "name": "runtime",
+        "type": "dir",
+        "children": [
+          {
+            "name": "CMakeLists.txt",
+            "type": "file",
+            "language": "CMake",
+            "bytes": 736,
+            "lines": 25
+          },
+          {
+            "name": "include",
+            "type": "dir",
+            "children": [
+              {
+                "name": "us4",
+                "type": "dir",
+                "children": [
+                  {
+                    "name": "adapter.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 2160,
+                    "lines": 83
+                  },
+                  {
+                    "name": "backend.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 1900,
+                    "lines": 57
+                  },
+                  {
+                    "name": "hardware.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 830,
+                    "lines": 34
+                  },
+                  {
+                    "name": "mode.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 984,
+                    "lines": 38
+                  },
+                  {
+                    "name": "runtime.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 1301,
+                    "lines": 61
+                  },
+                  {
+                    "name": "tokenizer.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 626,
+                    "lines": 20
+                  },
+                  {
+                    "name": "version.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 290,
+                    "lines": 11
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "src",
+            "type": "dir",
+            "children": [
+              {
+                "name": "adapter_dense.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 3463,
+                "lines": 110
+              },
+              {
+                "name": "adapter_internal.hpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 202,
+                "lines": 12
+              },
+              {
+                "name": "adapter_registry.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 1198,
+                "lines": 51
+              },
+              {
+                "name": "backend_cpu.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 2892,
+                "lines": 93
+              },
+              {
+                "name": "backend_internal.hpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 554,
+                "lines": 18
+              },
+              {
+                "name": "backend.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 4403,
+                "lines": 142
+              },
+              {
+                "name": "hardware.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 3230,
+                "lines": 147
+              },
+              {
+                "name": "mode.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 1226,
+                "lines": 39
+              },
+              {
+                "name": "runtime.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 4274,
+                "lines": 140
+              },
+              {
+                "name": "tokenizer.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 1565,
+                "lines": 70
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "tests",
+        "type": "dir",
+        "children": [
+          {
+            "name": "CMakeLists.txt",
+            "type": "file",
+            "language": "CMake",
+            "bytes": 315,
+            "lines": 14
+          },
+          {
+            "name": "test_adapter.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 1552,
+            "lines": 54
+          },
+          {
+            "name": "test_backend.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 2123,
+            "lines": 72
+          },
+          {
+            "name": "test_hardware.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 924,
+            "lines": 35
+          },
+          {
+            "name": "test_mode.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 1337,
+            "lines": 41
+          },
+          {
+            "name": "test_runtime.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 1678,
+            "lines": 71
+          },
+          {
+            "name": "us4_test.hpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 2107,
+            "lines": 43
+          }
+        ]
+      },
+      {
+        "name": "tools",
+        "type": "dir",
+        "children": [
+          {
+            "name": "llm-project-mapper",
+            "type": "dir",
+            "children": [
+              {
+                "name": "bin",
+                "type": "dir",
+                "children": [
+                  {
+                    "name": "cli.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 4141,
+                    "lines": 161
+                  }
+                ]
+              },
+              {
+                "name": "jsconfig.json",
+                "type": "file",
+                "language": "JSON",
+                "bytes": 214,
+                "lines": 11
+              },
+              {
+                "name": "package.json",
+                "type": "file",
+                "language": "JSON",
+                "bytes": 680,
+                "lines": 33
+              },
+              {
+                "name": "src",
+                "type": "dir",
+                "children": [
+                  {
+                    "name": "ignore.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 2395,
+                    "lines": 104
+                  },
+                  {
+                    "name": "index.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 299,
+                    "lines": 6
+                  },
+                  {
+                    "name": "languages.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 2277,
+                    "lines": 103
+                  },
+                  {
+                    "name": "mapper.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 2999,
+                    "lines": 105
+                  },
+                  {
+                    "name": "render.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 2630,
+                    "lines": 81
+                  },
+                  {
+                    "name": "stacks.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 8395,
+                    "lines": 292
+                  },
+                  {
+                    "name": "types.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 2378,
+                    "lines": 72
+                  },
+                  {
+                    "name": "walk.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 3788,
+                    "lines": 135
+                  }
+                ]
+              },
+              {
+                "name": "test",
+                "type": "dir",
+                "children": [
+                  {
+                    "name": "languages.test.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 1092,
+                    "lines": 29
+                  },
+                  {
+                    "name": "mapper.test.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 2029,
+                    "lines": 59
+                  },
+                  {
+                    "name": "stacks.test.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 2883,
+                    "lines": 92
+                  },
+                  {
+                    "name": "walk.test.js",
+                    "type": "file",
+                    "language": "JavaScript",
+                    "bytes": 1993,
+                    "lines": 55
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
