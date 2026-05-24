@@ -1,0 +1,21 @@
+# Build output
+/build/
+build/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Node (E2E tooling, later sprints)
+node_modules/
