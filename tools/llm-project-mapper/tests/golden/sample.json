@@ -1,0 +1,158 @@
+{
+  "schema": "llm-project-mapper/v1",
+  "generatedAt": "<normalized>",
+  "generator": {
+    "name": "@wesleysimplicio/llm-project-mapper",
+    "version": "0.1.0"
+  },
+  "root": "<normalized>",
+  "name": "sample-fixture",
+  "description": "regression fixture",
+  "stacks": [
+    {
+      "kind": "node",
+      "marker": "package.json",
+      "name": "sample-fixture",
+      "manager": "npm",
+      "frameworks": [
+        "express",
+        "vitest"
+      ]
+    },
+    {
+      "kind": "go",
+      "marker": "go.mod",
+      "name": "github.com/example/sample",
+      "manager": "go"
+    }
+  ],
+  "languages": [
+    {
+      "language": "JSON",
+      "files": 1,
+      "lines": 7,
+      "bytes": 185
+    },
+    {
+      "language": "Go Module",
+      "files": 1,
+      "lines": 7,
+      "bytes": 86
+    },
+    {
+      "language": "Go",
+      "files": 1,
+      "lines": 3,
+      "bytes": 28
+    },
+    {
+      "language": "Markdown",
+      "files": 1,
+      "lines": 3,
+      "bytes": 27
+    },
+    {
+      "language": "Python",
+      "files": 1,
+      "lines": 2,
+      "bytes": 28
+    },
+    {
+      "language": "JavaScript",
+      "files": 1,
+      "lines": 1,
+      "bytes": 22
+    }
+  ],
+  "dependencies": [
+    {
+      "stack": "node",
+      "source": "package.json",
+      "runtime": [
+        "express"
+      ],
+      "dev": [
+        "vitest"
+      ]
+    },
+    {
+      "stack": "go",
+      "source": "go.mod",
+      "runtime": [
+        "github.com/spf13/cobra"
+      ],
+      "dev": []
+    }
+  ],
+  "entryPoints": [
+    "src/app.py",
+    "src/index.js"
+  ],
+  "metrics": {
+    "totalFiles": 6,
+    "totalDirs": 2,
+    "totalLines": 23,
+    "totalBytes": 376,
+    "maxDepth": 1
+  },
+  "structure": {
+    "name": ".",
+    "type": "dir",
+    "children": [
+      {
+        "name": "README.md",
+        "type": "file",
+        "language": "Markdown",
+        "bytes": 27,
+        "lines": 3
+      },
+      {
+        "name": "go.mod",
+        "type": "file",
+        "language": "Go Module",
+        "bytes": 86,
+        "lines": 7
+      },
+      {
+        "name": "lib",
+        "type": "dir",
+        "children": [
+          {
+            "name": "helper.go",
+            "type": "file",
+            "language": "Go",
+            "bytes": 28,
+            "lines": 3
+          }
+        ]
+      },
+      {
+        "name": "package.json",
+        "type": "file",
+        "language": "JSON",
+        "bytes": 185,
+        "lines": 7
+      },
+      {
+        "name": "src",
+        "type": "dir",
+        "children": [
+          {
+            "name": "app.py",
+            "type": "file",
+            "language": "Python",
+            "bytes": 28,
+            "lines": 2
+          },
+          {
+            "name": "index.js",
+            "type": "file",
+            "language": "JavaScript",
+            "bytes": 22,
+            "lines": 1
+          }
+        ]
+      }
+    ]
+  }
+}

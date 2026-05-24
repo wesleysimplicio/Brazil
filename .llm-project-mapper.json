@@ -1,6 +1,6 @@
 {
   "schema": "llm-project-mapper/v1",
-  "generatedAt": "2026-05-24T23:37:09.208Z",
+  "generatedAt": "2026-05-24T23:41:59.012Z",
   "generator": {
     "name": "@wesleysimplicio/llm-project-mapper",
     "version": "0.1.0"
@@ -18,9 +18,9 @@
   "languages": [
     {
       "language": "Rust",
-      "files": 12,
-      "lines": 2239,
-      "bytes": 69812
+      "files": 13,
+      "lines": 2296,
+      "bytes": 71872
     },
     {
       "language": "C++",
@@ -36,9 +36,15 @@
     },
     {
       "language": "Markdown",
-      "files": 1,
-      "lines": 213,
-      "bytes": 11768
+      "files": 2,
+      "lines": 216,
+      "bytes": 11795
+    },
+    {
+      "language": "JSON",
+      "files": 2,
+      "lines": 165,
+      "bytes": 3066
     },
     {
       "language": "YAML",
@@ -57,19 +63,44 @@
       "files": 1,
       "lines": 26,
       "bytes": 600
+    },
+    {
+      "language": "Go Module",
+      "files": 1,
+      "lines": 7,
+      "bytes": 86
+    },
+    {
+      "language": "Go",
+      "files": 1,
+      "lines": 3,
+      "bytes": 28
+    },
+    {
+      "language": "Python",
+      "files": 1,
+      "lines": 2,
+      "bytes": 28
+    },
+    {
+      "language": "JavaScript",
+      "files": 1,
+      "lines": 1,
+      "bytes": 22
     }
   ],
   "dependencies": [],
   "entryPoints": [
     "apps/main.cpp",
-    "tools/llm-project-mapper/src/main.rs"
+    "tools/llm-project-mapper/src/main.rs",
+    "tools/llm-project-mapper/tests/fixtures/sample/src/app.py"
   ],
   "metrics": {
-    "totalFiles": 48,
-    "totalDirs": 13,
-    "totalLines": 4510,
-    "totalBytes": 147744,
-    "maxDepth": 3
+    "totalFiles": 56,
+    "totalDirs": 18,
+    "totalLines": 4748,
+    "totalBytes": 153061,
+    "maxDepth": 6
   },
   "structure": {
     "name": ".",
@@ -477,11 +508,97 @@
                 "type": "dir",
                 "children": [
                   {
+                    "name": "fixtures",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "sample",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "README.md",
+                            "type": "file",
+                            "language": "Markdown",
+                            "bytes": 27,
+                            "lines": 3
+                          },
+                          {
+                            "name": "go.mod",
+                            "type": "file",
+                            "language": "Go Module",
+                            "bytes": 86,
+                            "lines": 7
+                          },
+                          {
+                            "name": "lib",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "helper.go",
+                                "type": "file",
+                                "language": "Go",
+                                "bytes": 28,
+                                "lines": 3
+                              }
+                            ]
+                          },
+                          {
+                            "name": "package.json",
+                            "type": "file",
+                            "language": "JSON",
+                            "bytes": 185,
+                            "lines": 7
+                          },
+                          {
+                            "name": "src",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "app.py",
+                                "type": "file",
+                                "language": "Python",
+                                "bytes": 28,
+                                "lines": 2
+                              },
+                              {
+                                "name": "index.js",
+                                "type": "file",
+                                "language": "JavaScript",
+                                "bytes": 22,
+                                "lines": 1
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "golden",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "sample.json",
+                        "type": "file",
+                        "language": "JSON",
+                        "bytes": 2881,
+                        "lines": 158
+                      }
+                    ]
+                  },
+                  {
                     "name": "integration.rs",
                     "type": "file",
                     "language": "Rust",
                     "bytes": 2391,
                     "lines": 61
+                  },
+                  {
+                    "name": "regression.rs",
+                    "type": "file",
+                    "language": "Rust",
+                    "bytes": 2060,
+                    "lines": 57
                   }
                 ]
               }
