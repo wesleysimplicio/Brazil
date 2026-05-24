@@ -1,6 +1,6 @@
 {
   "schema": "llm-project-mapper/v1",
-  "generatedAt": "2026-05-24T22:44:16.953Z",
+  "generatedAt": "2026-05-24T23:37:09.208Z",
   "generator": {
     "name": "@wesleysimplicio/llm-project-mapper",
     "version": "0.1.0"
@@ -17,22 +17,22 @@
   ],
   "languages": [
     {
+      "language": "Rust",
+      "files": 12,
+      "lines": 2239,
+      "bytes": 69812
+    },
+    {
       "language": "C++",
       "files": 24,
       "lines": 1606,
       "bytes": 46437
     },
     {
-      "language": "JavaScript",
-      "files": 13,
-      "lines": 1294,
-      "bytes": 37299
-    },
-    {
       "language": "Other",
-      "files": 2,
-      "lines": 222,
-      "bytes": 11562
+      "files": 3,
+      "lines": 223,
+      "bytes": 11570
     },
     {
       "language": "Markdown",
@@ -53,21 +53,22 @@
       "bytes": 1855
     },
     {
-      "language": "JSON",
-      "files": 2,
-      "lines": 44,
-      "bytes": 894
+      "language": "TOML",
+      "files": 1,
+      "lines": 26,
+      "bytes": 600
     }
   ],
   "dependencies": [],
   "entryPoints": [
-    "apps/main.cpp"
+    "apps/main.cpp",
+    "tools/llm-project-mapper/src/main.rs"
   ],
   "metrics": {
-    "totalFiles": 49,
-    "totalDirs": 14,
-    "totalLines": 3582,
-    "totalBytes": 115517,
+    "totalFiles": 48,
+    "totalDirs": 13,
+    "totalLines": 4510,
+    "totalBytes": 147744,
     "maxDepth": 3
   },
   "structure": {
@@ -121,26 +122,6 @@
         "lines": 21
       },
       {
-        "name": "apps",
-        "type": "dir",
-        "children": [
-          {
-            "name": "CMakeLists.txt",
-            "type": "file",
-            "language": "CMake",
-            "bytes": 146,
-            "lines": 3
-          },
-          {
-            "name": "main.cpp",
-            "type": "file",
-            "language": "C++",
-            "bytes": 5618,
-            "lines": 164
-          }
-        ]
-      },
-      {
         "name": "CMakeLists.txt",
         "type": "file",
         "language": "CMake",
@@ -160,6 +141,26 @@
         "language": "Markdown",
         "bytes": 11768,
         "lines": 213
+      },
+      {
+        "name": "apps",
+        "type": "dir",
+        "children": [
+          {
+            "name": "CMakeLists.txt",
+            "type": "file",
+            "language": "CMake",
+            "bytes": 146,
+            "lines": 3
+          },
+          {
+            "name": "main.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 5618,
+            "lines": 164
+          }
+        ]
       },
       {
         "name": "runtime",
@@ -259,6 +260,13 @@
                 "lines": 51
               },
               {
+                "name": "backend.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 4403,
+                "lines": 142
+              },
+              {
                 "name": "backend_cpu.cpp",
                 "type": "file",
                 "language": "C++",
@@ -271,13 +279,6 @@
                 "language": "C++",
                 "bytes": 554,
                 "lines": 18
-              },
-              {
-                "name": "backend.cpp",
-                "type": "file",
-                "language": "C++",
-                "bytes": 4403,
-                "lines": 142
               },
               {
                 "name": "hardware.cpp",
@@ -375,125 +376,112 @@
             "type": "dir",
             "children": [
               {
-                "name": "bin",
-                "type": "dir",
-                "children": [
-                  {
-                    "name": "cli.js",
-                    "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 4141,
-                    "lines": 161
-                  }
-                ]
+                "name": ".gitignore",
+                "type": "file",
+                "language": "Other",
+                "bytes": 8,
+                "lines": 1
               },
               {
-                "name": "jsconfig.json",
+                "name": "Cargo.toml",
                 "type": "file",
-                "language": "JSON",
-                "bytes": 214,
-                "lines": 11
-              },
-              {
-                "name": "package.json",
-                "type": "file",
-                "language": "JSON",
-                "bytes": 680,
-                "lines": 33
+                "language": "TOML",
+                "bytes": 600,
+                "lines": 26
               },
               {
                 "name": "src",
                 "type": "dir",
                 "children": [
                   {
-                    "name": "ignore.js",
+                    "name": "datetime.rs",
                     "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 2395,
-                    "lines": 104
+                    "language": "Rust",
+                    "bytes": 1830,
+                    "lines": 50
                   },
                   {
-                    "name": "index.js",
+                    "name": "ignore.rs",
                     "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 299,
-                    "lines": 6
+                    "language": "Rust",
+                    "bytes": 5269,
+                    "lines": 197
                   },
                   {
-                    "name": "languages.js",
+                    "name": "json.rs",
                     "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 2277,
-                    "lines": 103
+                    "language": "Rust",
+                    "bytes": 11432,
+                    "lines": 367
                   },
                   {
-                    "name": "mapper.js",
+                    "name": "languages.rs",
                     "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 2999,
-                    "lines": 105
-                  },
-                  {
-                    "name": "render.js",
-                    "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 2630,
-                    "lines": 81
-                  },
-                  {
-                    "name": "stacks.js",
-                    "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 8395,
-                    "lines": 292
-                  },
-                  {
-                    "name": "types.js",
-                    "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 2378,
+                    "language": "Rust",
+                    "bytes": 2396,
                     "lines": 72
                   },
                   {
-                    "name": "walk.js",
+                    "name": "lib.rs",
                     "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 3788,
-                    "lines": 135
+                    "language": "Rust",
+                    "bytes": 473,
+                    "lines": 18
+                  },
+                  {
+                    "name": "main.rs",
+                    "type": "file",
+                    "language": "Rust",
+                    "bytes": 4926,
+                    "lines": 168
+                  },
+                  {
+                    "name": "mapper.rs",
+                    "type": "file",
+                    "language": "Rust",
+                    "bytes": 8708,
+                    "lines": 276
+                  },
+                  {
+                    "name": "render.rs",
+                    "type": "file",
+                    "language": "Rust",
+                    "bytes": 3501,
+                    "lines": 117
+                  },
+                  {
+                    "name": "stacks.rs",
+                    "type": "file",
+                    "language": "Rust",
+                    "bytes": 17460,
+                    "lines": 542
+                  },
+                  {
+                    "name": "types.rs",
+                    "type": "file",
+                    "language": "Rust",
+                    "bytes": 7038,
+                    "lines": 226
+                  },
+                  {
+                    "name": "walk.rs",
+                    "type": "file",
+                    "language": "Rust",
+                    "bytes": 4388,
+                    "lines": 145
                   }
                 ]
               },
               {
-                "name": "test",
+                "name": "tests",
                 "type": "dir",
                 "children": [
                   {
-                    "name": "languages.test.js",
+                    "name": "integration.rs",
                     "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 1092,
-                    "lines": 29
-                  },
-                  {
-                    "name": "mapper.test.js",
-                    "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 2029,
-                    "lines": 59
-                  },
-                  {
-                    "name": "stacks.test.js",
-                    "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 2883,
-                    "lines": 92
-                  },
-                  {
-                    "name": "walk.test.js",
-                    "type": "file",
-                    "language": "JavaScript",
-                    "bytes": 1993,
-                    "lines": 55
+                    "language": "Rust",
+                    "bytes": 2391,
+                    "lines": 61
                   }
                 ]
               }

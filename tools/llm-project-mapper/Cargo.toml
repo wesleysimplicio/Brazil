@@ -1,0 +1,26 @@
+[package]
+name = "llm-project-mapper"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.73"
+description = "Map any codebase into a structured .llm-project-mapper.json so AI agents understand a project before they program it."
+license = "MIT"
+authors = ["Wesley Simplicio"]
+
+[[bin]]
+name = "llm-project-mapper"
+path = "src/main.rs"
+
+[lib]
+name = "llm_project_mapper"
+path = "src/lib.rs"
+
+# Zero runtime dependencies: the tool relies only on the standard library so it
+# builds offline and starts instantly.
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
