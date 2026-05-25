@@ -1,6 +1,6 @@
 {
   "schema": "llm-project-mapper/v1",
-  "generatedAt": "2026-05-25T00:43:59.148Z",
+  "generatedAt": "2026-05-25T00:53:43.596Z",
   "generator": {
     "name": "@wesleysimplicio/llm-project-mapper",
     "version": "0.1.0"
@@ -18,9 +18,9 @@
   "languages": [
     {
       "language": "C++",
-      "files": 30,
-      "lines": 2995,
-      "bytes": 93342
+      "files": 33,
+      "lines": 3504,
+      "bytes": 110634
     },
     {
       "language": "Rust",
@@ -35,6 +35,12 @@
       "bytes": 11570
     },
     {
+      "language": "Markdown",
+      "files": 3,
+      "lines": 195,
+      "bytes": 10500
+    },
+    {
       "language": "JSON",
       "files": 2,
       "lines": 165,
@@ -47,16 +53,10 @@
       "bytes": 5702
     },
     {
-      "language": "Markdown",
-      "files": 2,
-      "lines": 131,
-      "bytes": 6392
-    },
-    {
       "language": "CMake",
       "files": 4,
-      "lines": 74,
-      "bytes": 1913
+      "lines": 76,
+      "bytes": 1948
     },
     {
       "language": "TOML",
@@ -96,10 +96,10 @@
     "tools/llm-project-mapper/tests/fixtures/sample/src/app.py"
   ],
   "metrics": {
-    "totalFiles": 62,
+    "totalFiles": 66,
     "totalDirs": 18,
-    "totalLines": 6056,
-    "totalBytes": 194621,
+    "totalLines": 6631,
+    "totalBytes": 216056,
     "maxDepth": 6
   },
   "structure": {
@@ -160,6 +160,13 @@
         "lines": 28
       },
       {
+        "name": "IMPLEMENTED.md",
+        "type": "file",
+        "language": "Markdown",
+        "bytes": 3519,
+        "lines": 51
+      },
+      {
         "name": "LICENSE",
         "type": "file",
         "language": "Other",
@@ -170,8 +177,8 @@
         "name": "README.md",
         "type": "file",
         "language": "Markdown",
-        "bytes": 6365,
-        "lines": 128
+        "bytes": 6954,
+        "lines": 141
       },
       {
         "name": "apps",
@@ -188,8 +195,8 @@
             "name": "main.cpp",
             "type": "file",
             "language": "C++",
-            "bytes": 10406,
-            "lines": 277
+            "bytes": 13047,
+            "lines": 352
           }
         ]
       },
@@ -201,8 +208,8 @@
             "name": "CMakeLists.txt",
             "type": "file",
             "language": "CMake",
-            "bytes": 768,
-            "lines": 27
+            "bytes": 787,
+            "lines": 28
           },
           {
             "name": "include",
@@ -274,6 +281,13 @@
                     "language": "C++",
                     "bytes": 290,
                     "lines": 11
+                  },
+                  {
+                    "name": "virality.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 3910,
+                    "lines": 135
                   }
                 ]
               }
@@ -366,6 +380,13 @@
                 "language": "C++",
                 "bytes": 1565,
                 "lines": 70
+              },
+              {
+                "name": "virality.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 7448,
+                "lines": 192
               }
             ]
           }
@@ -379,8 +400,8 @@
             "name": "CMakeLists.txt",
             "type": "file",
             "language": "CMake",
-            "bytes": 341,
-            "lines": 16
+            "bytes": 357,
+            "lines": 17
           },
           {
             "name": "test_adapter.cpp",
@@ -430,6 +451,13 @@
             "language": "C++",
             "bytes": 1678,
             "lines": 71
+          },
+          {
+            "name": "test_virality.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 3293,
+            "lines": 107
           },
           {
             "name": "us4_test.hpp",

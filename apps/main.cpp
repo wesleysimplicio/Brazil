@@ -8,6 +8,7 @@
 #include "us4/agents.hpp"
 #include "us4/runtime.hpp"
 #include "us4/version.hpp"
+#include "us4/virality.hpp"
 
 namespace {
 
@@ -19,6 +20,7 @@ void print_usage() {
       << "  us4-cli --probe [--backend <kind>]\n"
       << "  us4-cli run --model <id> --prompt <text> [options]\n"
       << "  us4-cli agents [--depth <n>] [--branching <n>] [options]\n"
+      << "  us4-cli virality analyze --text <post>\n"
       << "  us4-cli --version | --help\n\n"
       << "run options:\n"
       << "  --model <id>        model id, e.g. qwen-0.5b (see --probe)\n"
@@ -34,6 +36,8 @@ void print_usage() {
       << "  --model <id>        model for the llm.generate yool (default qwen-0.5b)\n"
       << "  --prompt <text>     prompt for the workers (default \"hello\")\n"
       << "  --max-tokens <n>    tokens per worker (default 6)\n\n"
+      << "virality (x-virality-skills, source-grounded For You ranking):\n"
+      << "  analyze --text <post>   score a post + actionable checklist\n\n"
       << "Note: this is the Sprint-01 skeleton. Generation uses a deterministic\n"
       << "stub compute path (no model weights yet); timings are real wall-clock\n"
       << "of that path, never hardcoded benchmark claims.\n";
@@ -187,6 +191,14 @@ int cmd_agents(int argc, char** argv, int start) {
         return res.ok ? res.text : ("error: " + res.error);
       });
 
+  // Our LLM also "knows" the X virality skill as an addressable capability.
+  space->register_local_yool(
+      "x.virality.analyze", [](Tuple& t) -> std::string {
+        auto a = us4::virality::analyze_post(t.data.count("text") ? t.data["text"]
+                                                                  : "");
+        return std::to_string(a.score.final);
+      });
+
   // Lazy hierarchical fan-out: represent branching**depth virtual agents
   // without materializing them.
   std::optional<int> thr =
@@ -233,6 +245,66 @@ int cmd_agents(int argc, char** argv, int start) {
   return 0;
 }
 
+int cmd_virality(int argc, char** argv, int start) {
+  if (start >= argc) {
+    std::cerr << "error: virality requires a subcommand: analyze --text <post>\n";
+    return 2;
+  }
+  std::string sub = argv[start];
+  if (sub != "analyze") {
+    std::cerr << "error: unknown virality subcommand: " << sub << "\n";
+    return 2;
+  }
+
+  std::string text;
+  bool have_text = false;
+  for (int i = start + 1; i < argc; ++i) {
+    std::string a = argv[i];
+    if (a == "--text") {
+      text = next_arg(argc, argv, i, a);
+      have_text = true;
+    } else {
+      std::cerr << "error: unknown analyze option: " << a << "\n";
+      return 2;
+    }
+  }
+  if (!have_text) {
+    std::cerr << "error: analyze requires --text <post>\n";
+    return 2;
+  }
+
+  us4::virality::Analysis r = us4::virality::analyze_post(text);
+
+  std::cout << std::fixed << std::setprecision(3);
+  std::cout << "== X virality analysis (For You ranking) ==\n";
+  if (r.score.removed) {
+    std::cout << "REMOVED from feed: " << r.score.removal_reason
+              << " (hard-limit filter)\n";
+    return 0;
+  }
+  std::cout << "score        : final=" << r.score.final
+            << " (combined=" << r.score.combined
+            << ", diversity x" << r.score.diversity_multiplier
+            << ", oon x" << r.score.oon_multiplier << ")\n";
+  std::cout << "top signals  :\n";
+  for (std::size_t i = 0; i < r.score.contributions.size() && i < 5; ++i) {
+    const auto& c = r.score.contributions[i];
+    std::cout << "  " << c.name << " = " << c.value << " (p=" << c.prob
+              << " x w=" << c.weight << ")\n";
+  }
+  std::cout << "checklist    :\n";
+  for (const auto& item : r.checklist) {
+    std::cout << "  [" << (item.pass ? "x" : " ") << "] " << item.id;
+    if (!item.pass) std::cout << " - " << item.note;
+    std::cout << "\n";
+  }
+  if (!r.tips.empty()) {
+    std::cout << "tips         :\n";
+    for (const auto& t : r.tips) std::cout << "  - " << t << "\n";
+  }
+  return 0;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -269,6 +341,9 @@ int main(int argc, char** argv) {
 
   if (first == "agents") {
     return cmd_agents(argc, argv, 2);
+  }
+  if (first == "virality") {
+    return cmd_virality(argc, argv, 2);
   }
 
   std::cerr << "error: unknown command: " << first << "\n\n";

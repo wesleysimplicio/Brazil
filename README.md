@@ -52,6 +52,19 @@ yool routes work straight into the US4 inference runtime.
 # -> virtual_agents=1073741824 while only 3 agents are active
 ```
 
+### X virality skill (x-virality-skills, native)
+
+The runtime also knows the [`x-virality-skills`](https://github.com/wesleysimplicio/x-virality-skills)
+For You ranking logic natively (`runtime/src/virality.cpp`): a source-grounded
+weighted score over 22 signals (follow_author and reply are the highest-leverage),
+video-duration gating, out-of-network and author-diversity decay, and hard-limit
+filters. A text heuristic estimates the signals from a draft post and returns an
+actionable checklist + tips.
+
+```bash
+./build/apps/us4-cli virality analyze --text "your draft post here?"
+```
+
 ### Not yet ported
 
 Real model loading and MLX/Metal/ANE kernels, MoE and ternary adapters,

@@ -6,6 +6,7 @@ set(US4_TESTS
   test_runtime
   test_hash
   test_agents
+  test_virality
 )
 
 foreach(t ${US4_TESTS})
