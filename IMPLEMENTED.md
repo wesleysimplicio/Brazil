@@ -23,6 +23,7 @@
 - **`tools/llm-project-mapper/`** — Rust project mapper (binary + library).
 - **Tests** — C++ CTest (`tests/`, 8 suites) and Rust `cargo test`
   (`tools/llm-project-mapper/`, 19 incl. golden regression).
+- **`CLAUDE.md`** — guidance + the standing policy to keep this file updated.
 
 ## How to build & test
 
@@ -37,6 +38,8 @@ cd tools/llm-project-mapper && cargo test
 
 ## Change log (newest first)
 
+- **Add `CLAUDE.md`** with the standing policy (update this log on every change)
+  for cross-session durability.
 - **Add x-virality-skills + this notes file.** Native `us4::virality` module
   (For You ranking + checklist), `us4-cli virality analyze`, `x.virality.analyze`
   yool registered in the agents kernel, `test_virality` (8/8 CTest total).

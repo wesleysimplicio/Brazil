@@ -1,6 +1,6 @@
 {
   "schema": "llm-project-mapper/v1",
-  "generatedAt": "2026-05-25T00:53:43.596Z",
+  "generatedAt": "2026-05-25T01:19:10.610Z",
   "generator": {
     "name": "@wesleysimplicio/llm-project-mapper",
     "version": "0.1.0"
@@ -29,16 +29,16 @@
       "bytes": 71872
     },
     {
+      "language": "Markdown",
+      "files": 4,
+      "lines": 244,
+      "bytes": 12474
+    },
+    {
       "language": "Other",
       "files": 3,
       "lines": 223,
       "bytes": 11570
-    },
-    {
-      "language": "Markdown",
-      "files": 3,
-      "lines": 195,
-      "bytes": 10500
     },
     {
       "language": "JSON",
@@ -96,10 +96,10 @@
     "tools/llm-project-mapper/tests/fixtures/sample/src/app.py"
   ],
   "metrics": {
-    "totalFiles": 66,
+    "totalFiles": 67,
     "totalDirs": 18,
-    "totalLines": 6631,
-    "totalBytes": 216056,
+    "totalLines": 6680,
+    "totalBytes": 218030,
     "maxDepth": 6
   },
   "structure": {
@@ -153,6 +153,13 @@
         "lines": 21
       },
       {
+        "name": "CLAUDE.md",
+        "type": "file",
+        "language": "Markdown",
+        "bytes": 1781,
+        "lines": 46
+      },
+      {
         "name": "CMakeLists.txt",
         "type": "file",
         "language": "CMake",
@@ -163,8 +170,8 @@
         "name": "IMPLEMENTED.md",
         "type": "file",
         "language": "Markdown",
-        "bytes": 3519,
-        "lines": 51
+        "bytes": 3712,
+        "lines": 54
       },
       {
         "name": "LICENSE",
