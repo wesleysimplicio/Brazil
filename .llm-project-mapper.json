@@ -1,6 +1,6 @@
 {
   "schema": "llm-project-mapper/v1",
-  "generatedAt": "2026-05-25T00:33:07.092Z",
+  "generatedAt": "2026-05-25T00:43:59.148Z",
   "generator": {
     "name": "@wesleysimplicio/llm-project-mapper",
     "version": "0.1.0"
@@ -17,16 +17,16 @@
   ],
   "languages": [
     {
+      "language": "C++",
+      "files": 30,
+      "lines": 2995,
+      "bytes": 93342
+    },
+    {
       "language": "Rust",
       "files": 13,
       "lines": 2296,
       "bytes": 71872
-    },
-    {
-      "language": "C++",
-      "files": 24,
-      "lines": 1606,
-      "bytes": 46437
     },
     {
       "language": "Other",
@@ -49,14 +49,14 @@
     {
       "language": "Markdown",
       "files": 2,
-      "lines": 114,
-      "bytes": 5503
+      "lines": 131,
+      "bytes": 6392
     },
     {
       "language": "CMake",
       "files": 4,
-      "lines": 70,
-      "bytes": 1855
+      "lines": 74,
+      "bytes": 1913
     },
     {
       "language": "TOML",
@@ -96,10 +96,10 @@
     "tools/llm-project-mapper/tests/fixtures/sample/src/app.py"
   ],
   "metrics": {
-    "totalFiles": 56,
+    "totalFiles": 62,
     "totalDirs": 18,
-    "totalLines": 4646,
-    "totalBytes": 146769,
+    "totalLines": 6056,
+    "totalBytes": 194621,
     "maxDepth": 6
   },
   "structure": {
@@ -170,8 +170,8 @@
         "name": "README.md",
         "type": "file",
         "language": "Markdown",
-        "bytes": 5476,
-        "lines": 111
+        "bytes": 6365,
+        "lines": 128
       },
       {
         "name": "apps",
@@ -188,8 +188,8 @@
             "name": "main.cpp",
             "type": "file",
             "language": "C++",
-            "bytes": 5618,
-            "lines": 164
+            "bytes": 10406,
+            "lines": 277
           }
         ]
       },
@@ -201,8 +201,8 @@
             "name": "CMakeLists.txt",
             "type": "file",
             "language": "CMake",
-            "bytes": 736,
-            "lines": 25
+            "bytes": 768,
+            "lines": 27
           },
           {
             "name": "include",
@@ -220,6 +220,13 @@
                     "lines": 83
                   },
                   {
+                    "name": "agents.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 9489,
+                    "lines": 284
+                  },
+                  {
                     "name": "backend.hpp",
                     "type": "file",
                     "language": "C++",
@@ -232,6 +239,13 @@
                     "language": "C++",
                     "bytes": 830,
                     "lines": 34
+                  },
+                  {
+                    "name": "hash.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 700,
+                    "lines": 22
                   },
                   {
                     "name": "mode.hpp",
@@ -291,6 +305,13 @@
                 "lines": 51
               },
               {
+                "name": "agents.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 20757,
+                "lines": 633
+              },
+              {
                 "name": "backend.cpp",
                 "type": "file",
                 "language": "C++",
@@ -317,6 +338,13 @@
                 "language": "C++",
                 "bytes": 3230,
                 "lines": 147
+              },
+              {
+                "name": "hash.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 4448,
+                "lines": 120
               },
               {
                 "name": "mode.cpp",
@@ -351,8 +379,8 @@
             "name": "CMakeLists.txt",
             "type": "file",
             "language": "CMake",
-            "bytes": 315,
-            "lines": 14
+            "bytes": 341,
+            "lines": 16
           },
           {
             "name": "test_adapter.cpp",
@@ -360,6 +388,13 @@
             "language": "C++",
             "bytes": 1552,
             "lines": 54
+          },
+          {
+            "name": "test_agents.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 5769,
+            "lines": 186
           },
           {
             "name": "test_backend.cpp",
@@ -374,6 +409,13 @@
             "language": "C++",
             "bytes": 924,
             "lines": 35
+          },
+          {
+            "name": "test_hash.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 954,
+            "lines": 31
           },
           {
             "name": "test_mode.cpp",

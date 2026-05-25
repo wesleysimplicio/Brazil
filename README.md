@@ -36,6 +36,22 @@ hardware probe, mode selector, and backend-selection contract.
 | Target platform | Apple Silicon (M1–M5) | Portable: builds and tests on Linux x86; Apple paths behind `__APPLE__`/availability guards |
 | Releases | No formal release; scaffold complete | `0.1.0` (skeleton) |
 
+### Orchestration kernel (simplicio-prompt, native)
+
+The runtime also ports the [`simplicio-prompt`](https://github.com/wesleysimplicio/simplicio-prompt)
+agent-orchestration logic natively in C++ (`runtime/src/agents.cpp`): YOOL
+atomic capabilities, content-addressed Tuples, a HAMT registry (32-way, 6
+levels), a Linda tuple-space, and `batch_spawn(depth, branching, threshold)`
+for **lazy** hierarchical fan-out — representing 1M+ virtual agents without
+materializing them. It includes a receipt LRU+TTL cache, a provider circuit
+breaker, jittered backoff, and bounded lane concurrency. A local `llm.generate`
+yool routes work straight into the US4 inference runtime.
+
+```bash
+./build/apps/us4-cli agents --depth 6 --branching 32 --tasks 2
+# -> virtual_agents=1073741824 while only 3 agents are active
+```
+
 ### Not yet ported
 
 Real model loading and MLX/Metal/ANE kernels, MoE and ternary adapters,
@@ -87,6 +103,7 @@ ctest --test-dir build                # 5/5
 
 ./build/apps/us4-cli --probe
 ./build/apps/us4-cli run --model qwen-0.5b --prompt "hi" --max-tokens 8
+./build/apps/us4-cli agents --depth 4 --branching 32   # orchestration kernel
 ```
 
 ### LLM Project Mapper (Rust)

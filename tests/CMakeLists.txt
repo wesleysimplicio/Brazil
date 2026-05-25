@@ -4,6 +4,8 @@ set(US4_TESTS
   test_backend
   test_adapter
   test_runtime
+  test_hash
+  test_agents
 )
 
 foreach(t ${US4_TESTS})

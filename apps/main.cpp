@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "us4/agents.hpp"
 #include "us4/runtime.hpp"
 #include "us4/version.hpp"
 
@@ -17,6 +18,7 @@ void print_usage() {
       << "Usage:\n"
       << "  us4-cli --probe [--backend <kind>]\n"
       << "  us4-cli run --model <id> --prompt <text> [options]\n"
+      << "  us4-cli agents [--depth <n>] [--branching <n>] [options]\n"
       << "  us4-cli --version | --help\n\n"
       << "run options:\n"
       << "  --model <id>        model id, e.g. qwen-0.5b (see --probe)\n"
@@ -24,6 +26,14 @@ void print_usage() {
       << "  --max-tokens <n>    tokens to generate (default 16)\n"
       << "  --backend <kind>    force backend: mlx|metal|ane|neon|cpu\n"
       << "  --seed <n>          deterministic seed (default 0)\n\n"
+      << "agents options (simplicio-prompt orchestration kernel):\n"
+      << "  --depth <n>         virtual tree depth (default 4)\n"
+      << "  --branching <n>     children per node (default 32)\n"
+      << "  --threshold <n>     compress active agents above this count\n"
+      << "  --tasks <n>         real worker tuples on the infer lane (default 4)\n"
+      << "  --model <id>        model for the llm.generate yool (default qwen-0.5b)\n"
+      << "  --prompt <text>     prompt for the workers (default \"hello\")\n"
+      << "  --max-tokens <n>    tokens per worker (default 6)\n\n"
       << "Note: this is the Sprint-01 skeleton. Generation uses a deterministic\n"
       << "stub compute path (no model weights yet); timings are real wall-clock\n"
       << "of that path, never hardcoded benchmark claims.\n";
@@ -124,6 +134,105 @@ int cmd_run(int argc, char** argv, int start) {
   return 0;
 }
 
+int cmd_agents(int argc, char** argv, int start) {
+  int depth = 4;
+  int branching = 32;
+  int threshold = -1;  // -1 => policy default
+  int tasks = 4;
+  std::string model = "qwen-0.5b";
+  std::string prompt = "hello";
+  std::uint32_t max_tokens = 6;
+
+  for (int i = start; i < argc; ++i) {
+    std::string a = argv[i];
+    if (a == "--depth") {
+      depth = std::atoi(next_arg(argc, argv, i, a).c_str());
+    } else if (a == "--branching") {
+      branching = std::atoi(next_arg(argc, argv, i, a).c_str());
+    } else if (a == "--threshold") {
+      threshold = std::atoi(next_arg(argc, argv, i, a).c_str());
+    } else if (a == "--tasks") {
+      tasks = std::atoi(next_arg(argc, argv, i, a).c_str());
+    } else if (a == "--model") {
+      model = next_arg(argc, argv, i, a);
+    } else if (a == "--prompt") {
+      prompt = next_arg(argc, argv, i, a);
+    } else if (a == "--max-tokens") {
+      max_tokens = static_cast<std::uint32_t>(
+          std::strtoul(next_arg(argc, argv, i, a).c_str(), nullptr, 10));
+    } else {
+      std::cerr << "error: unknown agents option: " << a << "\n";
+      return 2;
+    }
+  }
+  if (depth < 1 || branching < 1) {
+    std::cerr << "error: --depth and --branching must be >= 1\n";
+    return 2;
+  }
+  if (max_tokens == 0) max_tokens = 6;
+
+  using namespace us4::agents;
+  auto [space, root] = build_default_space();
+
+  // Wire the orchestration kernel to our LLM: a local yool that runs the US4
+  // inference runtime. Tuples carrying `llm.generate` route here, no API call.
+  us4::Runtime rt;
+  space->register_local_yool(
+      "llm.generate", [&rt, max_tokens](Tuple& t) -> std::string {
+        us4::RunRequest req;
+        req.model_id = t.data.count("model") ? t.data["model"] : "qwen-0.5b";
+        req.prompt = t.data.count("prompt") ? t.data["prompt"] : "";
+        req.max_tokens = max_tokens;
+        us4::RunResult res = rt.run(req);
+        return res.ok ? res.text : ("error: " + res.error);
+      });
+
+  // Lazy hierarchical fan-out: represent branching**depth virtual agents
+  // without materializing them.
+  std::optional<int> thr =
+      threshold < 0 ? std::nullopt : std::optional<int>(threshold);
+  BatchSpawnReceipt br =
+      space->batch_spawn(*root, "agent.dev.python", depth, branching, thr);
+
+  // Materialize a handful of real worker tuples on the "infer" lane.
+  for (int i = 0; i < tasks; ++i) {
+    space->spawn_agent(*root, "llm.generate",
+                       {{"lane", "infer"},
+                        {"model", model},
+                        {"prompt", prompt + " #" + std::to_string(i)}});
+  }
+
+  // Drain the lane across bounded workers (llm.generate routes to the runtime).
+  LaneWorkerPool pool(*space);
+  auto results = pool.run_lane(
+      "infer", [](Tuple&) { return std::string("<no-executor>"); });
+
+  SpaceSnapshot snap = space->snapshot();
+  auto cap = space->lookup_yool("llm.generate");
+
+  std::cout << "== US4 agents (simplicio-prompt kernel) ==\n";
+  std::cout << "batch_spawn  : depth=" << br.depth << " branching=" << br.branching
+            << " -> virtual_agents=" << br.virtual_agents << "\n";
+  std::cout << "             : root_agent=" << br.root_agent_id
+            << " receipt=" << br.receipt_id
+            << " threshold=" << br.compression_threshold << "\n";
+  std::cout << "registry     : llm.generate -> HAMT addr "
+            << (cap ? std::to_string(*cap) : std::string("<unregistered>"))
+            << "\n";
+  std::cout << "infer lane   : " << results.size() << " worker(s) executed\n";
+  for (std::size_t i = 0; i < results.size(); ++i) {
+    std::cout << "  [" << i << "] " << results[i] << "\n";
+  }
+  std::cout << "snapshot     : active=" << snap.active_agents
+            << " compressed=" << snap.compressed_agents
+            << " virtual=" << snap.virtual_agents
+            << " total=" << snap.total_agents << "\n";
+  std::cout << "             : tuples=" << snap.tuples
+            << " cache_entries=" << snap.cache_entries
+            << " lanes=" << snap.lanes.size() << "\n";
+  return 0;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -156,6 +265,10 @@ int main(int argc, char** argv) {
   }
   if (first == "run") {
     return cmd_run(argc, argv, 2);
+  }
+
+  if (first == "agents") {
+    return cmd_agents(argc, argv, 2);
   }
 
   std::cerr << "error: unknown command: " << first << "\n\n";
