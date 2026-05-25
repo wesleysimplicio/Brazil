@@ -1,6 +1,6 @@
 {
   "schema": "llm-project-mapper/v1",
-  "generatedAt": "2026-05-24T23:41:59.012Z",
+  "generatedAt": "2026-05-25T00:33:07.092Z",
   "generator": {
     "name": "@wesleysimplicio/llm-project-mapper",
     "version": "0.1.0"
@@ -35,12 +35,6 @@
       "bytes": 11570
     },
     {
-      "language": "Markdown",
-      "files": 2,
-      "lines": 216,
-      "bytes": 11795
-    },
-    {
       "language": "JSON",
       "files": 2,
       "lines": 165,
@@ -51,6 +45,12 @@
       "files": 3,
       "lines": 133,
       "bytes": 5702
+    },
+    {
+      "language": "Markdown",
+      "files": 2,
+      "lines": 114,
+      "bytes": 5503
     },
     {
       "language": "CMake",
@@ -98,8 +98,8 @@
   "metrics": {
     "totalFiles": 56,
     "totalDirs": 18,
-    "totalLines": 4748,
-    "totalBytes": 153061,
+    "totalLines": 4646,
+    "totalBytes": 146769,
     "maxDepth": 6
   },
   "structure": {
@@ -170,8 +170,8 @@
         "name": "README.md",
         "type": "file",
         "language": "Markdown",
-        "bytes": 11768,
-        "lines": 213
+        "bytes": 5476,
+        "lines": 111
       },
       {
         "name": "apps",

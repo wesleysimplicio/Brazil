@@ -1,213 +1,111 @@
-# Qwen3.6
+# Native ports: US4 V6 runtime + LLM Project Mapper
 
-<div style="text-align: center">
-  <img width="400px" src="https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.6/logo.png">
-  <p>
-    <a href="https://chat.qwen.ai/">💜 <b>Qwen Studio</b></a> |
-    <a href="https://huggingface.co/Qwen">🤗 Hugging Face</a> | 
-    <a href="https://modelscope.cn/organization/qwen">🤖 ModelScope</a> | 
-    📑 Paper |
-    📖 Documentation |
-    <a href="https://github.com/QwenLM/Qwen/blob/main/assets/wechat.png">💬 WeChat (微信)</a> |
-    <a href="https://discord.gg/CV4E9rpNSD">🫨 Discord</a>   
-  </p>
-</div>
+This repository contains native, from-scratch implementations of two projects by
+[@wesleysimplicio](https://github.com/wesleysimplicio), built and tested here:
 
-Welcome to the GitHub repository of Qwen3.6 (& Qwen3.5). Here, you can find official information about Qwen3.6 (User Guide, coming soon), post your questions ([Issues](https://github.com/QwenLM/Qwen3.6/issues)), and share your ideas with the community ([Discussions](https://github.com/QwenLM/Qwen3.6/discussions)).
+| Project | Upstream | Ours (this repo) | Where |
+| --- | --- | --- | --- |
+| US4 V6 — Universal State Runtime | [`us4-v6-simplicio-apple`](https://github.com/wesleysimplicio/us4-v6-simplicio-apple) | C++20 Sprint-01 skeleton | `runtime/`, `apps/` |
+| LLM Project Mapper | [`llm-project-mapper`](https://github.com/wesleysimplicio/llm-project-mapper) | Rust rewrite of the mapping engine | `tools/llm-project-mapper/` |
 
-## Introduction
+This README compares the **latest upstream version** of each project with the
+version implemented here. Scope is stated honestly: these are focused,
+fully-building-and-tested slices, not feature-complete reimplementations.
 
-### Qwen3.6
+---
 
-Qwen3.6 is the latest addition to the Qwen model family. Building upon the fundamental breakthroughs of Qwen3.5, this release prioritizes stability and real-world utility. It offers developers a more intuitive, responsive, and genuinely productive coding experience, shaped by direct community feedback. This update delivers substantial upgrades, particularly in:
+## US4 V6 — Universal State Runtime
 
-- **Agentic Coding:** The model now handles front-end workflows and repository-level reasoning with greater fluency and precision.
-- **Thinking Preservation:** A new feature retains thinking context across conversation history, streamlining iterative development and reducing overhead.
+A local LLM inference runtime targeting Apple Silicon. Our port implements
+Sprint 01 ("Foundations and Skeleton"): the runtime skeleton, CLI contract,
+hardware probe, mode selector, and backend-selection contract.
 
-### Qwen3.5
+### Latest upstream vs. ours
 
-Over recent months, we have intensified our focus on developing foundation models that deliver exceptional utility and performance. Qwen3.5 represents a significant leap forward, integrating breakthroughs in multimodal learning, architectural efficiency, reinforcement learning scale, and global accessibility to empower developers and enterprises with unprecedented capability and efficiency.
+| Aspect | Upstream (latest) | This repo (ours) |
+| --- | --- | --- |
+| Language | C++ 78.5% + TS/JS/Shell tooling | C++20 |
+| Build system | CMake + Ninja | CMake + Ninja |
+| Scope | Full runtime; 12-sprint roadmap toward v1.0 | Sprint 01 skeleton (foundations) |
+| Backends | MLX, Metal, NEON/Accelerate, ANE (M5+) | Selection contract for all four; **NEON/Accelerate + scalar CPU implemented**, MLX/Metal/ANE declared-but-unavailable with safe fallback |
+| Model families | Dense (Qwen/Llama/Gemma), MoE (DeepSeek/Kimi/MiniMax/GLM), ternary (BitNet/PT-BitNet) | Dense adapter (Qwen/Llama/Gemma) |
+| Inference | Real on-device inference with model weights | Deterministic **stub** over a real backend `matvec` (no weights yet); timings are measured wall-clock, never hardcoded |
+| Mode selection | RAM-tiered runtime modes | 7 RAM tiers (128 GB Full → 16 GB Nano) |
+| CLI | `us4-cli --probe` / `run` | Same contract: `--probe`, `run --model … --prompt … --max-tokens …` |
+| Tests | GoogleTest + Playwright E2E | 5 CTest suites |
+| Target platform | Apple Silicon (M1–M5) | Portable: builds and tests on Linux x86; Apple paths behind `__APPLE__`/availability guards |
+| Releases | No formal release; scaffold complete | `0.1.0` (skeleton) |
 
-Qwen3.5 features the following enhancement:
+### Not yet ported
 
-- **Unified Vision-Language Foundation**: Early fusion training on trillions of multimodal tokens achieves cross-generational parity with Qwen3 and outperforms Qwen3-VL models across reasoning, coding, agents, and visual understanding benchmarks.
+Real model loading and MLX/Metal/ANE kernels, MoE and ternary adapters,
+KV-cache memory tiering, speculative decoding, and continuous batching — these
+are later sprints in the upstream roadmap.
 
-- **Efficient Hybrid Architecture**: Gated Delta Networks combined with sparse Mixture-of-Experts deliver high-throughput inference with minimal latency and cost overhead.
+---
 
-- **Scalable RL Generalization**: Reinforcement learning scaled across million-agent environments with progressively complex task distributions for robust real-world adaptability.
+## LLM Project Mapper
 
-- **Global Linguistic Coverage**: Expanded support to 201 languages and dialects, enabling inclusive, worldwide deployment with nuanced cultural and regional understanding.
+Scans a codebase and emits a structured `.llm-project-mapper.json` so AI agents
+understand a project before they program it. The upstream is a full
+**scaffolding starter** (it also generates `.specs/`, `.agents/`, `.skills/`,
+agent instruction files, CI, and E2E tests). Our version reimplements the
+**mapping engine** — the part that "maps the projects it will program" — in
+Rust, focused on speed and correctness.
 
-- **Next-Generation Training Infrastructure**: Near-100% multimodal training efficiency compared to text-only training and asynchronous RL frameworks supporting massive-scale agent scaffolds and environment orchestration.
+### Latest upstream vs. ours
 
+| Aspect | Upstream v0.3.2 (2026-05-18) | This repo (ours) |
+| --- | --- | --- |
+| Language | TypeScript 42.6% / JavaScript 36.7% (+ Shell/PowerShell/Python) | **Rust**, zero runtime dependencies |
+| Install / run | `npx @wesleysimplicio/llm-project-mapper` | `cargo build --release` → `./llm-project-mapper` |
+| Scope | Full scaffolder: auto-map **plus** generate `.specs/.agents/.skills/.claude`, instruction files, CI, E2E | Focused mapping engine (produces `.llm-project-mapper.json`) |
+| Stack detection | Node, Python, Go, .NET, Rust, Java, … | 12 ecosystems (Node, Python, Go, Rust, PHP, CMake, .NET, JVM, Ruby, Dart, Elixir, Swift) **with dependency parsing** |
+| Output schema | Scaffolding + map | `.llm-project-mapper.json` (`schema: llm-project-mapper/v1`) |
+| Performance | Node.js (interpreter startup per run) | Compiled binary, **parallel line counting** (`std::thread::scope`); ~**15× faster** on this repo (62 ms → 4 ms) |
+| Dependencies | npm ecosystem | none (Rust `std` only) |
+| Tests | Playwright smoke tests | 19 tests incl. a **golden-snapshot regression** test |
 
-## News
-- 2026-04-22: Qwen3.6-27B is now availabe on [Hugging Face Hub](https://huggingface.co/collections/Qwen/qwen36) and [ModelScope](https://modelscope.cn/collections/Qwen/Qwen36). Read more on our [release blog](https://qwen.ai/blog?id=qwen3.6-27b)!
-- 2026-04-16: Qwen3.6-35B-A3B is now availabe on [Hugging Face Hub](https://huggingface.co/collections/Qwen/qwen36) and [ModelScope](https://modelscope.cn/collections/Qwen/Qwen36). Read more on our [release blog](https://qwen.ai/blog?id=qwen3.6-35b-a3b)!
-- 2026-03-02: Qwen3.5-9B, Qwen3.5-4B, Qwen3.5-2B, and Qwen3.5-0.8B are now available on [Hugging Face Hub](https://huggingface.co/collections/Qwen/qwen35) and [ModelScope](https://modelscope.cn/collections/Qwen/Qwen35)!
-- 2026-02-24: Qwen3.5-122B-A10B, Qwen3.5-35B-A3B, and Qwen3.5-27B are released. Check out the model cards on [Hugging Face Hub](https://huggingface.co/collections/Qwen/qwen35) or [ModelScope](https://modelscope.cn/collections/Qwen/Qwen35) for more information!
-- 2026-02-16: We release Qwen3.5. The first release includes a 397B-A17B MoE model. Read more on our [release blog](https://qwen.ai/blog?id=qwen3.5). More sizes are coming & Happy Chinese New Year!
-- 2025-09-11: We release Qwen3-Next-80B-A3B, an ultra-sparse mixture-of-experts model with hybrid attention architecture, designed for extreme efficiency. Read more on our [blog](https://qwen.ai/blog?id=qwen3-next).
+### Why Rust here, but C++ for the runtime?
 
-## Models
+The mapper is I/O- and CPU-bound work (walk, read, count) that was interpreted —
+a clear win for a compiled, parallel language. The US4 runtime was kept in C++
+on purpose: it is already a top-tier performance language and the upstream spec
+depends on MLX/Metal/Accelerate (C/C++/Obj-C) interop, so a Go port would be
+slower and a Rust port would be a lateral move that loses those bindings.
 
-The official model weights are released on:
-- [🤗Hugging Face Hub](https://huggingface.co/Qwen): Most LLM frameworks and applications support downloading model files from Hugging Face Hub automatically by specifying the model ID, e.g., `Qwen/Qwen3.6-35B-A3B` and `Qwen/Qwen3.5-397B-A17B`. 
-  You can also download model files manually using `huggingface download` or `git clone`.
-  Please follow the instructions on the model page. 
-- [🤖ModelScope](https://www.modelscope.cn/organization/Qwen): For users unable to access Hugging Face Hub, we strongly recommend using ModelScope. 
-  For supported frameworks, you can download from ModelScope by setting environment variables, such as `SGLANG_USE_MODELSCOPE=true` or `VLLM_USE_MODELSCOPE=true`.
-  You can also download model files manually using `modelscope download` or `git clone`.
-  Please follow the instructions on the model page. 
+---
 
-## Benchmarks
+## Build & test
 
-**Qwen3.6 Open Models**
+### US4 V6 runtime (C++)
 
-![Qwen3.6-27B Benchmark Results](https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.6/Figures/qwen3.6_27b_score.png)
+```bash
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+ctest --test-dir build                # 5/5
 
-![Qwen3.6-35B-A3B Benchmark Results](https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.6/Figures/qwen3.6_35b_a3b_score.png)
-
-For detailed results, please check out the [Qwen3.6-35B-A3B blog](https://qwen.ai/blog?id=qwen3.6-35b-a3b) and the [Qwen3.6-27B blog](https://qwen.ai/blog?id=qwen3.6-27b).
-
-**Qwen3.5 Open Models**
-
-![Qwen3.5-397B-A17B Benchmark Results](https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/Figures/qwen3.5_397b_a17b_score.png)
-
-![Qwen3.5-122B-A10B, Qwen3.5-35B-A3B, and Qwen3.5-27B Benchmark Results](https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/Figures/qwen3.5_middle_size_score.png)
-
-![Qwen3.5-9B and Qwen3.5-4B Benchmark Results](https://qianwen-res.oss-accelerate-overseas.aliyuncs.com/Qwen3.5/Figures/qwen3.5_small_size_score.png)
-
-For detailed results, please check out the [Qwen3.5 blog](https://qwen.ai/blog?id=qwen3.5).
-
-## Quickstart
-
-To learn more about Qwen3.6, feel free to read our documentation (coming soon).
-
-### Official
-
-You can try Qwen3.6 on our official sites and enjoy the native experience with extra features, such as deep research, web dev, and adaptive tool use.
-
-#### Qwen Studio
-
-For users who simply would like to try Qwen3.6, [Qwen Studio](https://chat.qwen.ai) (formerly known as Qwen Chat) is just a touch away. 
-Qwen Studio provides Web UI and desktop and mobile applications, with a familiar, easy-to-use user interface.
-Qwen Studio is also a playground for our ideas, showcasing how Qwen3.6 can be integrated into your workflow and applications.
-
-#### Qwen API
-
-The official Qwen API is provided by [Alibaba Cloud Model Studio](https://modelstudio.alibabacloud.com/).
-
-Alibaba Cloud Model Studio provides first-class support for Qwen3.6, which is compatible with various API specifications, including OpenAI and Anthropic, making it simple for you to try Qwen3.6 in your own applications.
-
-#### Qwen Code
-
-[Qwen Code](https://github.com/QwenLM/qwen-code) is an open-source AI agent for the terminal, optimized for Qwen models. It helps you understand large codebases, automate tedious work, and ship faster.
-
-For more information, please refer to [Qwen Code](https://qwenlm.github.io/qwen-code-docs/).
-
-#### Qwen Agent
-
-For agent development, take a look at [Qwen-Agent](https://github.com/QwenLM/Qwen-Agent). Qwen Agent is an open-source AI agent framework that helps you build powerful LLM applications based on the instruction following, tool usage, planning, and memory capabilities of Qwen.
-
-Check out [Qwen Agent](https://qwenlm.github.io/Qwen-Agent/en/) to find out more!
-
-### Local Use
-
-#### Hugging Face Transformers
-
-[`transformers`](https://huggingface.co/transformers) acts as the model-definition framework in the current open-weight LLM landscape.
-It also includes functionalities for LLM inference and training. The addition of serving capabilities in `transformers` makes it much easier to integrate new models in your development.
-
-To launch a server, simply use the `transformers serve` command:
-```shell
-transformers serve --port 8000 --continuous-batching
-```
-OpenAI-compatible APIs can be accessed at `http://localhost:8000/v1` and the server downloads models from Hugging Face Hub automatically.
-
-With the server running, you can also interact with Qwen3.6 directly from the command line:
-```shell
-transformers chat Qwen/Qwen3.6-35B-A3B
+./build/apps/us4-cli --probe
+./build/apps/us4-cli run --model qwen-0.5b --prompt "hi" --max-tokens 8
 ```
 
-#### llama.cpp
+### LLM Project Mapper (Rust)
 
-[`llama.cpp`](https://github.com/ggml-org/llama.cpp) enables LLM inference with minimal setup and state-of-the-art performance on a wide range of hardware.
-llama.cpp supports Qwen3.6 (text & vision).
-Look for models ending with GGUF on Hugging Face Hub.
+```bash
+cd tools/llm-project-mapper
+cargo build --release
+cargo test                            # 19/19 (incl. golden regression)
 
-#### MLX (Apple Silicon)
-
-If you are running on Apple Silicon, both [`mlx-lm`](https://github.com/ml-explore/mlx-lm) (text-only) and [`mlx-vlm`](https://github.com/Blaizzy/mlx-vlm) (vision + text) support Qwen3.6. Look for models ending with **MLX** on the Hugging Face Hub.
-
-### Deployment
-
-Qwen3.6 is supported by multiple inference frameworks. 
-Here we demonstrate the usage of `SGLang` and `vLLM`
-
-#### SGLang
-
-[SGLang](https://github.com/sgl-project/sglang) is a fast serving framework for large language models and vision language models.
-SGLang could be used to launch a server with OpenAI-compatible API service. 
-
-```shell
-python -m sglang.launch_server --model-path Qwen/Qwen3.6-35B-A3B --port 8000 --tp-size 4 --context-length 262144 --reasoning-parser qwen3
+./target/release/llm-project-mapper /path/to/project --summary
 ```
 
-An OpenAI-compatible API will be available at `http://localhost:30000/v1`.
+To accept an intentional change to the mapper output, regenerate the golden
+snapshot: `UPDATE_GOLDEN=1 cargo test --test regression`.
 
-#### vLLM
+---
 
-[vLLM](https://github.com/vllm-project/vllm) is a high-throughput and memory-efficient inference and serving engine for LLMs.
-vLLM could be used to launch a server with OpenAI-compatible API service. 
+## Licensing
 
-```shell
-vllm serve Qwen/Qwen3.6-35B-A3B --port 8000 --tensor-parallel-size 4 --max-model-len 262144 --reasoning-parser qwen3
-```
-
-An OpenAI-compatible API will be available at `http://localhost:8000/v1`.
-
-
-### Finetuning
-
-We advise you to use training frameworks, including [UnSloth](https://github.com/unslothai/unsloth), [Swift](https://github.com/modelscope/swift), [Llama-Factory](https://github.com/hiyouga/LLaMA-Factory), etc., to finetune your models with SFT, DPO, GRPO, etc.
-
-
-## License Agreement
-
-All our open-weight models are licensed under Apache 2.0. 
-You can find the license files in the respective Hugging Face repositories.
-
-## Citation
-
-If you find our work helpful, feel free to give us a cite.
-
-```bibtex
-@misc{qwen3.6-27b,
-    title = {{Qwen3.6-27B}: Flagship-Level Coding in a {27B} Dense Model},
-    author = {{Qwen Team}},
-    year = {2026},
-    month = {April},
-    url = {https://qwen.ai/blog?id=qwen3.6-27b}
-}
-
-@misc{qwen3.6-35b-a3b,
-    title = {{Qwen3.6-35B-A3B}: Agentic Coding Power, Now Open to All},
-    author = {{Qwen Team}},
-    year = {2026},
-    month = {April},
-    url = {https://qwen.ai/blog?id=qwen3.6-35b-a3b}
-}
-
-@misc{qwen3.5,
-    title  = {{Qwen3.5}: Towards Native Multimodal Agents},
-    author = {{Qwen Team}},
-    year   = {2026},
-    month  = {February},
-    url    = {https://qwen.ai/blog?id=qwen3.5}
-}
-```
-
-## Contact Us
-
-If you are interested to leave a message to either our research team or product team, join our [Discord](https://discord.gg/z3GAxXZ9Ce) or [WeChat groups](https://github.com/QwenLM/Qwen3/blob/main/assets/wechat.png)!
+The repository `LICENSE` is Apache-2.0. The `llm-project-mapper` crate declares
+MIT, matching its upstream. All upstream references above belong to their
+respective authors.
