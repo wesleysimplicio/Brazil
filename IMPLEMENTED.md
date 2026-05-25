@@ -13,6 +13,7 @@
 | LLM Project Mapper | [`llm-project-mapper`](https://github.com/wesleysimplicio/llm-project-mapper) | Zero-dependency **Rust** rewrite of the mapping engine: stack detection (12 ecosystems), parallel line counting, `.llm-project-mapper.json` (schema `llm-project-mapper/v1`) | `tools/llm-project-mapper/` | Working, ~15x faster than Node ref |
 | simplicio-prompt orchestration kernel | [`simplicio-prompt`](https://github.com/wesleysimplicio/simplicio-prompt) | Native C++: YOOL/Tuple/HAMT, Linda tuple-space, `batch_spawn` lazy fan-out (1M+ virtual agents), receipt cache, circuit breaker, backoff, lane pool; `llm.generate` yool routes to the runtime | `runtime/src/agents.cpp`, `us4-cli agents` | Working |
 | X virality skill | [`x-virality-skills`](https://github.com/wesleysimplicio/x-virality-skills) | Native C++: source-grounded For You ranking (22 weighted signals, video gating, OON + author-diversity decay, hard filters) + text heuristic with actionable checklist | `runtime/src/virality.cpp`, `us4-cli virality analyze` | Working |
+| Skills catalog | [`llm-project-mapper`](https://github.com/wesleysimplicio/llm-project-mapper) `.skills/` | Vendored full catalog of 22 Claude Code skills (hyperframes/video + general-purpose: `conventional-commits`, `ralph-loop`, `playwright-e2e`, `_template`, ...); Apache-2.0 attribution preserved | `.claude/skills/` | Deployed (always-on: caveman, ralph-loop, everything-claude-code) |
 
 ## Components in this repo
 
@@ -38,6 +39,9 @@ cd tools/llm-project-mapper && cargo test
 
 ## Change log (newest first)
 
+- **Deploy the `llm-project-mapper` skills catalog** into `.claude/skills/` — all
+  22 skills vendored verbatim plus `NOTICE.md`/`UPSTREAM-LICENSE` (Apache-2.0).
+  3 are `status: always-on` (`caveman`, `ralph-loop`, `everything-claude-code`).
 - **Add `CLAUDE.md`** with the standing policy (update this log on every change)
   for cross-session durability.
 - **Add x-virality-skills + this notes file.** Native `us4::virality` module
