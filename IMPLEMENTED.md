@@ -14,6 +14,7 @@
 | simplicio-prompt orchestration kernel | [`simplicio-prompt`](https://github.com/wesleysimplicio/simplicio-prompt) | Native C++: YOOL/Tuple/HAMT, Linda tuple-space, `batch_spawn` lazy fan-out (1M+ virtual agents), receipt cache, circuit breaker, backoff, lane pool; `llm.generate` yool routes to the runtime | `runtime/src/agents.cpp`, `us4-cli agents` | Working |
 | X virality skill | [`x-virality-skills`](https://github.com/wesleysimplicio/x-virality-skills) | Native C++: source-grounded For You ranking (22 weighted signals, video gating, OON + author-diversity decay, hard filters) + text heuristic with actionable checklist | `runtime/src/virality.cpp`, `us4-cli virality analyze` | Working |
 | Skills catalog | [`llm-project-mapper`](https://github.com/wesleysimplicio/llm-project-mapper) `.skills/` | Vendored full catalog of 22 Claude Code skills (hyperframes/video + general-purpose: `conventional-commits`, `ralph-loop`, `playwright-e2e`, `_template`, ...); Apache-2.0 attribution preserved | `.claude/skills/` | Deployed (always-on: caveman, ralph-loop, everything-claude-code) |
+| Native skills subsystem | (this repo) | Load + parse the `.claude/skills` catalog, register each skill as a HAMT-addressable yool, and a native `conventional-commits` validator (type/scope/breaking/subject checks) | `runtime/src/skills.cpp`, `us4-cli skills` | Working |
 
 ## Components in this repo
 
@@ -39,6 +40,10 @@ cd tools/llm-project-mapper && cargo test
 
 ## Change log (newest first)
 
+- **Implement a native skills subsystem** (`runtime/src/skills.cpp`): loads/parses
+  the `.claude/skills` catalog, registers each skill as a HAMT-addressable yool,
+  and adds a native `conventional-commits` validator. Exposed via `us4-cli skills
+  list | show | lint-commit`. `test_skills` added (9/9 CTest).
 - **Deploy the `llm-project-mapper` skills catalog** into `.claude/skills/` — all
   22 skills vendored verbatim plus `NOTICE.md`/`UPSTREAM-LICENSE` (Apache-2.0).
   3 are `status: always-on` (`caveman`, `ralph-loop`, `everything-claude-code`).

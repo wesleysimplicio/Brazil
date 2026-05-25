@@ -1,6 +1,6 @@
 {
   "schema": "llm-project-mapper/v1",
-  "generatedAt": "2026-05-25T01:22:02.438Z",
+  "generatedAt": "2026-05-25T01:26:42.238Z",
   "generator": {
     "name": "@wesleysimplicio/llm-project-mapper",
     "version": "0.1.0"
@@ -17,16 +17,16 @@
   ],
   "languages": [
     {
-      "language": "Markdown",
-      "files": 28,
-      "lines": 3758,
-      "bytes": 176064
+      "language": "C++",
+      "files": 36,
+      "lines": 3914,
+      "bytes": 123527
     },
     {
-      "language": "C++",
-      "files": 33,
-      "lines": 3504,
-      "bytes": 110634
+      "language": "Markdown",
+      "files": 28,
+      "lines": 3763,
+      "bytes": 176646
     },
     {
       "language": "Rust",
@@ -55,8 +55,8 @@
     {
       "language": "CMake",
       "files": 4,
-      "lines": 76,
-      "bytes": 1948
+      "lines": 78,
+      "bytes": 1979
     },
     {
       "language": "TOML",
@@ -96,10 +96,10 @@
     "tools/llm-project-mapper/tests/fixtures/sample/src/app.py"
   ],
   "metrics": {
-    "totalFiles": 92,
+    "totalFiles": 95,
     "totalDirs": 42,
-    "totalLines": 10384,
-    "totalBytes": 392383,
+    "totalLines": 10801,
+    "totalBytes": 405889,
     "maxDepth": 6
   },
   "structure": {
@@ -489,8 +489,8 @@
         "name": "IMPLEMENTED.md",
         "type": "file",
         "language": "Markdown",
-        "bytes": 4350,
-        "lines": 58
+        "bytes": 4932,
+        "lines": 63
       },
       {
         "name": "LICENSE",
@@ -521,8 +521,8 @@
             "name": "main.cpp",
             "type": "file",
             "language": "C++",
-            "bytes": 13047,
-            "lines": 352
+            "bytes": 16775,
+            "lines": 454
           }
         ]
       },
@@ -534,8 +534,8 @@
             "name": "CMakeLists.txt",
             "type": "file",
             "language": "CMake",
-            "bytes": 787,
-            "lines": 28
+            "bytes": 804,
+            "lines": 29
           },
           {
             "name": "include",
@@ -593,6 +593,13 @@
                     "language": "C++",
                     "bytes": 1301,
                     "lines": 61
+                  },
+                  {
+                    "name": "skills.hpp",
+                    "type": "file",
+                    "language": "C++",
+                    "bytes": 1546,
+                    "lines": 50
                   },
                   {
                     "name": "tokenizer.hpp",
@@ -701,6 +708,13 @@
                 "lines": 140
               },
               {
+                "name": "skills.cpp",
+                "type": "file",
+                "language": "C++",
+                "bytes": 4585,
+                "lines": 159
+              },
+              {
                 "name": "tokenizer.cpp",
                 "type": "file",
                 "language": "C++",
@@ -726,8 +740,8 @@
             "name": "CMakeLists.txt",
             "type": "file",
             "language": "CMake",
-            "bytes": 357,
-            "lines": 17
+            "bytes": 371,
+            "lines": 18
           },
           {
             "name": "test_adapter.cpp",
@@ -777,6 +791,13 @@
             "language": "C++",
             "bytes": 1678,
             "lines": 71
+          },
+          {
+            "name": "test_skills.cpp",
+            "type": "file",
+            "language": "C++",
+            "bytes": 3034,
+            "lines": 99
           },
           {
             "name": "test_virality.cpp",

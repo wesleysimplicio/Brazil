@@ -7,6 +7,7 @@
 
 #include "us4/agents.hpp"
 #include "us4/runtime.hpp"
+#include "us4/skills.hpp"
 #include "us4/version.hpp"
 #include "us4/virality.hpp"
 
@@ -21,6 +22,7 @@ void print_usage() {
       << "  us4-cli run --model <id> --prompt <text> [options]\n"
       << "  us4-cli agents [--depth <n>] [--branching <n>] [options]\n"
       << "  us4-cli virality analyze --text <post>\n"
+      << "  us4-cli skills list | show <name> | lint-commit --message <m>\n"
       << "  us4-cli --version | --help\n\n"
       << "run options:\n"
       << "  --model <id>        model id, e.g. qwen-0.5b (see --probe)\n"
@@ -38,6 +40,10 @@ void print_usage() {
       << "  --max-tokens <n>    tokens per worker (default 6)\n\n"
       << "virality (x-virality-skills, source-grounded For You ranking):\n"
       << "  analyze --text <post>   score a post + actionable checklist\n\n"
+      << "skills (native skills subsystem over .claude/skills/):\n"
+      << "  list [--dir <path>]            list + register skills as HAMT yools\n"
+      << "  show <name> [--dir <path>]     print a skill's metadata\n"
+      << "  lint-commit --message <msg>    native conventional-commits validator\n\n"
       << "Note: this is the Sprint-01 skeleton. Generation uses a deterministic\n"
       << "stub compute path (no model weights yet); timings are real wall-clock\n"
       << "of that path, never hardcoded benchmark claims.\n";
@@ -305,6 +311,99 @@ int cmd_virality(int argc, char** argv, int start) {
   return 0;
 }
 
+int cmd_skills(int argc, char** argv, int start) {
+  if (start >= argc) {
+    std::cerr << "error: skills requires a subcommand: list | show | lint-commit\n";
+    return 2;
+  }
+  std::string sub = argv[start];
+  std::string dir = ".claude/skills";
+  std::string name;
+  std::string message;
+  bool have_message = false;
+
+  for (int i = start + 1; i < argc; ++i) {
+    std::string a = argv[i];
+    if (a == "--dir") {
+      dir = next_arg(argc, argv, i, a);
+    } else if (a == "--message") {
+      message = next_arg(argc, argv, i, a);
+      have_message = true;
+    } else if (a[0] != '-' && name.empty()) {
+      name = a;
+    } else {
+      std::cerr << "error: unknown skills option: " << a << "\n";
+      return 2;
+    }
+  }
+
+  if (sub == "lint-commit") {
+    if (!have_message) {
+      std::cerr << "error: lint-commit requires --message <msg>\n";
+      return 2;
+    }
+    us4::skills::CommitLint r = us4::skills::lint_conventional_commit(message);
+    std::cout << "== conventional-commits ==\n";
+    std::cout << "valid    : " << (r.valid ? "yes" : "no") << "\n";
+    std::cout << "type     : " << r.type << "\n";
+    if (!r.scope.empty()) std::cout << "scope    : " << r.scope << "\n";
+    std::cout << "breaking : " << (r.breaking ? "yes" : "no") << "\n";
+    std::cout << "subject  : " << r.subject << "\n";
+    for (const auto& e : r.errors) std::cout << "  - error: " << e << "\n";
+    return r.valid ? 0 : 1;
+  }
+
+  us4::skills::SkillRegistry reg;
+  std::size_t loaded = reg.load_dir(dir);
+
+  if (sub == "show") {
+    if (name.empty()) {
+      std::cerr << "error: show requires a skill name\n";
+      return 2;
+    }
+    const us4::skills::SkillDef* s = reg.find(name);
+    if (!s) {
+      std::cerr << "error: skill not found: " << name << " (in " << dir << ")\n";
+      return 1;
+    }
+    std::cout << "name        : " << s->name << "\n";
+    std::cout << "status      : " << (s->status.empty() ? "(default)" : s->status)
+              << "\n";
+    if (!s->source.empty()) std::cout << "source      : " << s->source << "\n";
+    std::cout << "description : " << s->description << "\n";
+    return 0;
+  }
+
+  if (sub == "list") {
+    if (loaded == 0) {
+      std::cerr << "no skills found under " << dir << "\n";
+      return 1;
+    }
+    // Make every skill addressable natively: register as a yool in the kernel.
+    us4::agents::TupleSpace space;
+    for (const auto& s : reg.all()) {
+      const std::string desc = s.description;
+      space.register_local_yool("skill." + s.name,
+                                [desc](us4::agents::Tuple&) { return desc; });
+    }
+    std::cout << "== skills (" << loaded << " loaded from " << dir << ") ==\n";
+    for (const auto& s : reg.all()) {
+      auto addr = space.lookup_yool("skill." + s.name);
+      std::cout << "  " << (s.always_on ? "*" : " ") << " " << s.name
+                << "  [yool addr " << (addr ? std::to_string(*addr) : "?")
+                << "]\n";
+      if (!s.description.empty())
+        std::cout << "      " << s.description << "\n";
+    }
+    std::cout << "(* = always-on; all " << loaded
+              << " skills registered as HAMT-addressable yools)\n";
+    return 0;
+  }
+
+  std::cerr << "error: unknown skills subcommand: " << sub << "\n";
+  return 2;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -344,6 +443,9 @@ int main(int argc, char** argv) {
   }
   if (first == "virality") {
     return cmd_virality(argc, argv, 2);
+  }
+  if (first == "skills") {
+    return cmd_skills(argc, argv, 2);
   }
 
   std::cerr << "error: unknown command: " << first << "\n\n";

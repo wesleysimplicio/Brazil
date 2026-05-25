@@ -10,6 +10,7 @@ add_library(us4_runtime
   src/hash.cpp
   src/agents.cpp
   src/virality.cpp
+  src/skills.cpp
 )
 
 target_include_directories(us4_runtime PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
