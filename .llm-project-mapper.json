@@ -1,6 +1,6 @@
 {
   "schema": "llm-project-mapper/v1",
-  "generatedAt": "2026-05-25T01:26:42.238Z",
+  "generatedAt": "2026-05-25T02:54:49.114Z",
   "generator": {
     "name": "@wesleysimplicio/llm-project-mapper",
     "version": "0.1.0"
@@ -17,16 +17,22 @@
   ],
   "languages": [
     {
+      "language": "Markdown",
+      "files": 33,
+      "lines": 5382,
+      "bytes": 249141
+    },
+    {
       "language": "C++",
       "files": 36,
       "lines": 3914,
       "bytes": 123527
     },
     {
-      "language": "Markdown",
-      "files": 28,
-      "lines": 3763,
-      "bytes": 176646
+      "language": "Python",
+      "files": 11,
+      "lines": 2371,
+      "bytes": 89678
     },
     {
       "language": "Rust",
@@ -35,10 +41,16 @@
       "bytes": 71872
     },
     {
+      "language": "HTML",
+      "files": 2,
+      "lines": 1471,
+      "bytes": 52056
+    },
+    {
       "language": "Other",
-      "files": 4,
-      "lines": 413,
-      "bytes": 22333
+      "files": 5,
+      "lines": 615,
+      "bytes": 33678
     },
     {
       "language": "JSON",
@@ -77,12 +89,6 @@
       "bytes": 28
     },
     {
-      "language": "Python",
-      "files": 1,
-      "lines": 2,
-      "bytes": 28
-    },
-    {
       "language": "JavaScript",
       "files": 1,
       "lines": 1,
@@ -96,10 +102,10 @@
     "tools/llm-project-mapper/tests/fixtures/sample/src/app.py"
   ],
   "metrics": {
-    "totalFiles": 95,
-    "totalDirs": 42,
-    "totalLines": 10801,
-    "totalBytes": 405889,
+    "totalFiles": 113,
+    "totalDirs": 48,
+    "totalLines": 16462,
+    "totalBytes": 631435,
     "maxDepth": 6
   },
   "structure": {
@@ -357,6 +363,168 @@
                 ]
               },
               {
+                "name": "skill-creator",
+                "type": "dir",
+                "children": [
+                  {
+                    "name": "LICENSE.txt",
+                    "type": "file",
+                    "language": "Other",
+                    "bytes": 11345,
+                    "lines": 202
+                  },
+                  {
+                    "name": "SKILL.md",
+                    "type": "file",
+                    "language": "Markdown",
+                    "bytes": 33168,
+                    "lines": 485
+                  },
+                  {
+                    "name": "agents",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "analyzer.md",
+                        "type": "file",
+                        "language": "Markdown",
+                        "bytes": 10376,
+                        "lines": 274
+                      },
+                      {
+                        "name": "comparator.md",
+                        "type": "file",
+                        "language": "Markdown",
+                        "bytes": 7287,
+                        "lines": 202
+                      },
+                      {
+                        "name": "grader.md",
+                        "type": "file",
+                        "language": "Markdown",
+                        "bytes": 9049,
+                        "lines": 223
+                      }
+                    ]
+                  },
+                  {
+                    "name": "assets",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "eval_review.html",
+                        "type": "file",
+                        "language": "HTML",
+                        "bytes": 7058,
+                        "lines": 146
+                      }
+                    ]
+                  },
+                  {
+                    "name": "eval-viewer",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "generate_review.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 16365,
+                        "lines": 471
+                      },
+                      {
+                        "name": "viewer.html",
+                        "type": "file",
+                        "language": "HTML",
+                        "bytes": 44998,
+                        "lines": 1325
+                      }
+                    ]
+                  },
+                  {
+                    "name": "references",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "schemas.md",
+                        "type": "file",
+                        "language": "Markdown",
+                        "bytes": 12061,
+                        "lines": 430
+                      }
+                    ]
+                  },
+                  {
+                    "name": "scripts",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "__init__.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 0,
+                        "lines": 0
+                      },
+                      {
+                        "name": "aggregate_benchmark.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 14386,
+                        "lines": 401
+                      },
+                      {
+                        "name": "generate_report.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 12847,
+                        "lines": 326
+                      },
+                      {
+                        "name": "improve_description.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 11116,
+                        "lines": 247
+                      },
+                      {
+                        "name": "package_skill.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 4234,
+                        "lines": 136
+                      },
+                      {
+                        "name": "quick_validate.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 3972,
+                        "lines": 103
+                      },
+                      {
+                        "name": "run_eval.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 11464,
+                        "lines": 310
+                      },
+                      {
+                        "name": "run_loop.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 13605,
+                        "lines": 328
+                      },
+                      {
+                        "name": "utils.py",
+                        "type": "file",
+                        "language": "Python",
+                        "bytes": 1661,
+                        "lines": 47
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
                 "name": "tailwind",
                 "type": "dir",
                 "children": [
@@ -489,8 +657,8 @@
         "name": "IMPLEMENTED.md",
         "type": "file",
         "language": "Markdown",
-        "bytes": 4932,
-        "lines": 63
+        "bytes": 5486,
+        "lines": 68
       },
       {
         "name": "LICENSE",

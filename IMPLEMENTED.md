@@ -15,6 +15,7 @@
 | X virality skill | [`x-virality-skills`](https://github.com/wesleysimplicio/x-virality-skills) | Native C++: source-grounded For You ranking (22 weighted signals, video gating, OON + author-diversity decay, hard filters) + text heuristic with actionable checklist | `runtime/src/virality.cpp`, `us4-cli virality analyze` | Working |
 | Skills catalog | [`llm-project-mapper`](https://github.com/wesleysimplicio/llm-project-mapper) `.skills/` | Vendored full catalog of 22 Claude Code skills (hyperframes/video + general-purpose: `conventional-commits`, `ralph-loop`, `playwright-e2e`, `_template`, ...); Apache-2.0 attribution preserved | `.claude/skills/` | Deployed (always-on: caveman, ralph-loop, everything-claude-code) |
 | Native skills subsystem | (this repo) | Load + parse the `.claude/skills` catalog, register each skill as a HAMT-addressable yool, and a native `conventional-commits` validator (type/scope/breaking/subject checks) | `runtime/src/skills.cpp`, `us4-cli skills` | Working |
+| skill-creator (official) | [`anthropics/skills`](https://github.com/anthropics/skills) | Cherry-picked the official `skill-creator` skill (authoring/evals/benchmarking new skills); Apache-2.0 `LICENSE.txt` included | `.claude/skills/skill-creator/` | Deployed |
 
 ## Components in this repo
 
@@ -40,6 +41,10 @@ cd tools/llm-project-mapper && cargo test
 
 ## Change log (newest first)
 
+- **Install official `skill-creator`** from `anthropics/skills` into
+  `.claude/skills/skill-creator/` (cherry-pick; Apache-2.0). Other listed repos
+  (fal-ai/genmedia, kepano/obsidian, higgsfield, image/video prompts) were
+  evaluated and skipped as off-domain for a C++/Rust LLM runtime.
 - **Implement a native skills subsystem** (`runtime/src/skills.cpp`): loads/parses
   the `.claude/skills` catalog, registers each skill as a HAMT-addressable yool,
   and adds a native `conventional-commits` validator. Exposed via `us4-cli skills
