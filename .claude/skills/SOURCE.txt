@@ -1,0 +1,11 @@
+These skills are vendored from the Superpowers project.
+
+Upstream: https://github.com/obra/superpowers
+Author:   Jesse Vincent <jesse@fsck.com>
+Version:  5.1.0
+Commit:   f2cbfbe
+License:  MIT (see LICENSE in this directory)
+
+The session-start hook (../hooks/session-start) injects the
+using-superpowers skill at session start so the skills activate
+automatically. It is wired via ../settings.json (SessionStart hook).

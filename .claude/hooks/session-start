@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# SessionStart hook for vendored Superpowers skills (project-level install).
+# Injects the using-superpowers entry skill so the agent uses skills proactively.
+
+set -euo pipefail
+
+# Resolve project root: this script lives at <project>/.claude/hooks/session-start
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+
+SKILL_FILE="${PROJECT_ROOT}/.claude/skills/using-superpowers/SKILL.md"
+
+# Read using-superpowers content
+using_superpowers_content=$(cat "${SKILL_FILE}" 2>&1 || echo "Error reading using-superpowers skill")
+
+# Escape string for JSON embedding using bash parameter substitution.
+escape_for_json() {
+    local s="$1"
+    s="${s//\\/\\\\}"
+    s="${s//\"/\\\"}"
+    s="${s//$'\n'/\\n}"
+    s="${s//$'\r'/\\r}"
+    s="${s//$'\t'/\\t}"
+    printf '%s' "$s"
+}
+
+using_superpowers_escaped=$(escape_for_json "$using_superpowers_content")
+session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the full content of your 'using-superpowers' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_superpowers_escaped}\n</EXTREMELY_IMPORTANT>"
+
+# Emit the SessionStart context-injection format Claude Code consumes.
+# Uses printf instead of heredoc to work around bash 5.3+ heredoc hang.
+printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context"
+
+exit 0
