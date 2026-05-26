@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # SessionStart hook for vendored Superpowers skills (project-level install).
-# Injects the using-superpowers entry skill so the agent uses skills proactively.
+# Injects the using-superpowers entry skill so the agent uses skills proactively,
+# and the MANDATORY simplicio-cli rule so the agent always routes coding tasks
+# through the simplicio-cli pipeline.
 
 set -euo pipefail
 
@@ -9,9 +11,13 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 SKILL_FILE="${PROJECT_ROOT}/.claude/skills/using-superpowers/SKILL.md"
+SIMPLICIO_FILE="${PROJECT_ROOT}/.claude/skills/simplicio-cli/SKILL.md"
 
 # Read using-superpowers content
 using_superpowers_content=$(cat "${SKILL_FILE}" 2>&1 || echo "Error reading using-superpowers skill")
+
+# Read mandatory simplicio-cli rule content
+simplicio_content=$(cat "${SIMPLICIO_FILE}" 2>&1 || echo "Error reading simplicio-cli skill")
 
 # Escape string for JSON embedding using bash parameter substitution.
 escape_for_json() {
@@ -25,7 +31,8 @@ escape_for_json() {
 }
 
 using_superpowers_escaped=$(escape_for_json "$using_superpowers_content")
-session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the full content of your 'using-superpowers' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_superpowers_escaped}\n</EXTREMELY_IMPORTANT>"
+simplicio_escaped=$(escape_for_json "$simplicio_content")
+session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the full content of your 'using-superpowers' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_superpowers_escaped}\n</EXTREMELY_IMPORTANT>\n\n<EXTREMELY_IMPORTANT>\n**MANDATORY: this repository requires the simplicio-cli pipeline for ALL coding tasks. Read/follow the rule below (also at .claude/skills/simplicio-cli/SKILL.md):**\n\n${simplicio_escaped}\n</EXTREMELY_IMPORTANT>"
 
 # Emit the SessionStart context-injection format Claude Code consumes.
 # Uses printf instead of heredoc to work around bash 5.3+ heredoc hang.
